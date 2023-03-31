@@ -16,13 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
 
 <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/179/179309.png" type="image/x-icon">
-
-<style>
-    .body{
-        font-family: 'Poppins', sans-serif;
-        font-family: 'Pacifico', cursive;
-    }
-</style>
+<link rel="stylesheet" href="css/style.css">
     <title>Apple Store</title>
 </head>
 <body>
@@ -58,10 +52,10 @@
                         <a class="nav-link disabled">Disabled</a>
                       </li>
                     </ul>
-                    <form class="d-flex" role="search">
-                      <input class="form-control me-2 rounded-start-5 w-5" type="search" placeholder="Search" aria-label="Search">
-                      <button class="btn btn-outline-success rounded-end-5" type="submit">Search</button>
-                    </form>
+                    <div class="d-flex" role="search">
+                      <input id="Search-input-box" class="form-control me-2 rounded-start-5 w-5" type="search" placeholder="Search" aria-label="Search">
+                      <button id="Search-button" class="btn btn-outline-success rounded-end-5" >Search</button>
+                    </div>
                   </div>
                 </div>
               </nav>
@@ -117,6 +111,11 @@
 
                 </div>
             </div>
+        </section>
+        <section>
+          <div id="noPhone-found" class="d-none d-flex justify-content-center align-items-center">
+            <h1>No phone found please try again</h1>
+          </div>
         </section>
     </main>
 
