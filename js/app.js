@@ -3,24 +3,32 @@
 const url2 = 'https://openapi.programming-hero.com/api/phone/${id}'
 
 
-const LoadPhoneData =async(SearchItem='iphone')=>{
+const LoadPhoneData =async(SearchItem='iphone',dataLimit)=>{
+    spinnerArea(true)
     const url =`https://openapi.programming-hero.com/api/phones?search=${SearchItem}`
     const res = await fetch(url);
     const data = await res.json();
     console.log(data.data);
-    displayPhoneData(data.data);
+    displayPhoneData(data.data,dataLimit);
 }
 
-const displayPhoneData=(Phones)=>{
+const displayPhoneData=(Phones,dataLimit)=>{
     const GetPhone = document.getElementById('Phone-container');
     GetPhone.innerHTML=''
-    Phones=Phones.slice(0,20)
 
-    const Nophopne= document.getElementById('noPhone-found')
+    const seeMore = document.getElementById('Show-all-sec')
+    if (dataLimit && Phones.length > 10) {
+        Phones=Phones.slice(0,10)
+        seeMore.classList.remove('d-none')
+    }else{
+        seeMore.classList.add('d-none')
+    }
+
+    const Nophone= document.getElementById('noPhone-found')
     if (Phones.length === 0) {
-        Nophopne.classList.remove('d-none')
+        Nophone.classList.remove('d-none')
     } else {
-        Nophopne.classList.add('d-none')
+        Nophone.classList.add('d-none')
     }
 
     Phones.forEach( phone => {
@@ -38,24 +46,43 @@ const displayPhoneData=(Phones)=>{
         GetPhone.appendChild(CreatDiv);
     });
 
-    
+    spinnerArea(false)
+}
+
+function SeearchCall(dataLimit) {
+    const SearchInputBox = document.getElementById('Search-input-box');
+    const SeachBoxValue= SearchInputBox.value;
+    LoadPhoneData(SeachBoxValue , dataLimit);
+    // SearchInputBox.value=''
 }
 
 document.getElementById('Search-button').addEventListener('click',function(){
-    const SearchInputBox = document.getElementById('Search-input-box');
-    const SeachBoxValue= SearchInputBox.value;
-    LoadPhoneData(SeachBoxValue);
-    SearchInputBox.value=''
+    SeearchCall(10)
 })
 
 document.getElementById('Search-input-box').addEventListener("keypress", function(event) {
-    const searchbox= document.getElementById('Search-input-box')
-    const boxvalue = searchbox.value;
     console.log(event.key);
     if (event.key === "Enter") {
-        LoadPhoneData(boxvalue);
-        searchbox.value=''
+        SeearchCall(10)
+        // searchbox.value=''
     }
 });
+
+
+const spinnerArea = (IsLoading)=>{
+    const Spinner = document.getElementById('Spinner-area')
+    if (IsLoading) {
+        Spinner.classList.remove('d-none')
+    } else {
+        Spinner.classList.add('d-none')
+    }
+
+}
+
+
+
+document.getElementById('See-more-btn').addEventListener('click',function(){
+    SeearchCall()
+})
 
 LoadPhoneData();
