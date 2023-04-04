@@ -1,6 +1,6 @@
 
 
-const url2 = 'https://openapi.programming-hero.com/api/phone/${id}'
+
 
 
 const LoadPhoneData =async(SearchItem='iphone',dataLimit)=>{
@@ -41,6 +41,7 @@ const displayPhoneData=(Phones,dataLimit)=>{
                 <h5 class="card-title">${phone.phone_name}</h5>
                 <p class="card-text">this is new release phone which is Purai Chomolokkho</p>
             </div>
+            <button onclick="showDetais('${phone.slug}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
         </div>
         `;
         GetPhone.appendChild(CreatDiv);
@@ -84,5 +85,30 @@ const spinnerArea = (IsLoading)=>{
 document.getElementById('See-more-btn').addEventListener('click',function(){
     SeearchCall()
 })
+
+const showDetais = async (id)=>{
+    const url = `https://openapi.programming-hero.com/api/phone/${id}`
+    const res = await fetch(url);
+    const data= await res.json();
+    displayPhonedetails(data.data);
+}
+
+const displayPhonedetails = (phone)=>{
+    console.log(phone);
+    const phonetitle = document.getElementById('exampleModalLabel')
+    phonetitle.innerText=phone.name;
+    const phonedetails= document.getElementById('phone-detail-info');
+    phonedetails.innerHTML=`
+        <p>Brand: ${phone.brand}</p>
+        <p>ChipSet: ${phone.mainFeatures.chipSet}</p>
+        <p>Display Size: ${phone.mainFeatures.displaySize}</p>
+        <p>Memory: ${phone.mainFeatures.memory}</p>
+        <p>Sensors: ${phone.mainFeatures.sensors[0]},${phone.mainFeatures.sensors[1]},${phone.mainFeatures.sensors[2]},${phone.mainFeatures.sensors[3]},${phone.mainFeatures.sensors[4]},${phone.mainFeatures.sensors[5]}</p>
+        <p>Storage: ${phone.mainFeatures.storage}</p>
+        <p>Release Date: ${phone.releaseDate}</p>
+<p>Others: <br> Bluetooth: ${phone.others.Bluetooth},<br> GPS: ${phone.others.GPS},<br> NFC: ${phone.others.NFC},<br> USB: ${phone.others.USB}, <br> Radio: ${phone.others.Radio}, <br> WLAN: ${phone.others.WLAN}</p>
+    `
+}
+
 
 LoadPhoneData();
